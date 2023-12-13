@@ -1,0 +1,42 @@
+﻿.cardProduct {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease-in-out;
+    margin: 10px 0 15px 0;
+}
+
+    .cardProduct:hover {
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+.cardProductHead {
+    padding: 10px;
+    text-align: center;
+    background-color: #f8f8f8;
+    width: 250px;
+    height: 250px;
+    display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+    .cardProductHead img {
+        bottom: auto 0 0 0;
+        max-width: 230px;
+        max-height: 230px;
+        transition: transform 0.3s ease-in-out;
+    }
+
+
+        .cardProductHead img:hover {
+            transform: scale(1.1);
+        }
+
+
+.cardProductBody {
+    height: 160px;
+    padding: 10px;
+}

@@ -1,0 +1,71 @@
+﻿@model ML.Producto
+@{
+    ViewData["Title"] = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Productos</h3>
+            <hr />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-1 offset-11">
+            @Html.ActionLink(" +", "Form", "Producto", null, new { @class = "btn btn-success bi-person-fill-add" })
+        </div>
+        <br />
+        <hr />
+    </div>
+    <div class="row">
+
+        @if (Model.Productos.Count > 0)
+        {
+            <table class="table table-hover">
+                <thead class="thead-dark">
+                <th scope="col">Editar</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Descripcion</th>
+                <th scope="col">Stock</th>
+                <th scope="col">EnCurso</th>
+                <th scope="col">Imagen</th>
+                <th scope="col">Eliminar</th>
+                </thead>
+                <tbody>
+                    @foreach (ML.Producto producto in Model.Productos)
+                    {
+                        <tr>
+                            <td scope="row" class="text-center">
+                                <a class="btn btn-primary bi bi-pencil-fill" href="@Url.Action("Form","Producto", new {Id = producto.Id})"></a>
+                            </td>
+                            <td>@producto.Nombre</td>
+                            <td>@producto.Descripcion</td>
+                            <td>@producto.Stock</td>
+                            <td>@producto.EnCurso</td>.
+                            <td>
+                                @if (@producto.Imagen == null)
+                                {
+                                    <img src="https://th.bing.com/th/id/OIP.yg9K7_Uf9-FcRAgWVG93MAHaD0?rs=1&pid=ImgDetMain" id="imgProducto" style="  width:100px; height:100px; " />
+                                }
+                                else
+                                {
+                                    <img src="data:image/png;base64,@Convert.ToBase64String(producto.Imagen)" id="imgProducto" style="  width:100px; height:100px; " />
+                                }
+                            </td>
+                            <td>
+                                <a class="btn btn-danger bi bi-trash" onclick="return confirm('¿Estás seguro de eliminar este usuario?');" href="@Url.Action("Delete","Producto", new {Id = producto.Id})"></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <div class="alert alert-danger" role="alert">
+                No se han podido recuperar datos
+            </div>
+        }
+    </div>
+</div>

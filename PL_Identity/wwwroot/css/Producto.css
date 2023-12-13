@@ -1,0 +1,17 @@
+﻿.imgProducto {
+    padding: 10px;
+    text-align: center;
+    background-color: #f8f8f8;
+    width: 250px;
+    height: 500px;
+    display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+    .imgProducto img {
+        bottom: auto 0 0 0;
+        width: 450px;
+        height: auto;
+    }

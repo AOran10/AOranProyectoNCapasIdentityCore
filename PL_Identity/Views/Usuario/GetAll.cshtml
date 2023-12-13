@@ -1,0 +1,42 @@
+﻿@model ML.Usuario 
+@{
+    ViewData["Title"] = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Usuarios datos</h3>
+            <hr />
+        </div>
+    </div>
+    <div class="row">
+
+        <table class="table table-hover">
+            <thead class="thead-dark">
+                <th scope="col">Editar</th>
+                <th scope="col">Usuario</th>
+                <th scope="col">Email</th>
+                <th scope="col">Eliminar</th>
+            </thead>
+            <tbody>
+                @foreach (ML.Usuario usuario in Model.Usuarios)
+                {
+                    <tr>
+                        <td scope="row" class="text-center">
+                            <a class="btn btn-primary bi bi-pencil-fill" href="@Url.Action("Form","Usuario", new {Id = usuario.Id})"></a>
+                        </td>
+                        <td>@usuario.UserName</td>
+                        <td>@usuario.Email</td>
+                        <td>
+                            <a class="btn btn-danger bi bi-trash" onclick="return confirm('¿Estás seguro de eliminar este usuario?');" href="@Url.Action("Form","Usuario", new {Id = usuario.Id})"></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        
+    </div>
+</div>

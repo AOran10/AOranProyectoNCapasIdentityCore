@@ -1,0 +1,41 @@
+﻿@model ML.Producto
+@{
+    ViewData["Title"] = "ProductoGet";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" href="~/css/Producto.css" />
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <card class="imgProducto">
+                @if (Model.Imagen == null)
+                {
+                    <img src="~/images/DefaultImage.png" id="imgenProducto" style="  width:100px; height:100px; " />
+                }
+                else
+                {
+                    <img src="data:image/png;base64,@Convert.ToBase64String(Model.Imagen)" id="imgenProducto" />
+                }
+            </card>
+        </div>
+        <div class="col-md-4">
+            <card class="infoProducto">
+                <h4>@Model.Nombre</h4>
+                <p>@Model.Descripcion</p>
+            </card>
+        </div>
+        <div class="col-md-4">
+            <card class="compraProducto">
+                <h2>Precio: @Model.Precio</h2>
+                <p class="existencias">Existencias: @Model.Stock</p>
+                <div class="row">
+                    <button class="btn btn-info col-md-4 form-control" onclick="agregarAlCarrito('@Model.Id')">Agregar al carrito</button>
+                    <p></p>
+                    <button class="btn btn-info col-md-4 form-control" onclick="comprarAhora('@Model.Id')">Comprar ahora</button>
+
+                </div>
+
+            </card>
+        </div>
+    </div>
+</div>

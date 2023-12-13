@@ -1,0 +1,69 @@
+﻿﻿@using Microsoft.AspNetCore.Identity
+@model IEnumerable<IdentityRole>
+
+@{
+    ViewData["Title"] = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Roles</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h5>Seleccione una rol para editarlo o + para agregar...</h5>
+            <hr />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-1 offset-11">
+            @Html.ActionLink("+", "Form", "RolController", htmlAttributes: new { @class = "btn btn-success" })
+        </div>
+    </div>
+
+    @if (Model.Any())
+    {
+        <div class="row">
+            <table class="table table-hover table-striped table-bordered table-responsive" id="table_roles">
+                <thead>
+                    <tr class="table-secondary">
+                        <td style="display :none;">id</td>
+                        <td>Asignar Rol</td>
+                        <td>Nombre</td>
+                        <td>Editar</td>
+                        <td>GUID</td>
+                        <td>Eliminar</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var rol in Model)
+                    {
+                        <tr>
+                            <td class="text-center"><a class="btn btn-success bi bi-person-raised-hand" href="@Url.Action("Asignar", "Rol", new { IdRole = rol.Id, Name= rol.Name})"></a></td>
+                            <td style="display :none;">@rol.Id </td>
+
+                            <td>@rol.Name</td>
+
+                            <td class="text-center"><a class="btn btn-info bi bi-pencil-fill" href="@Url.Action("Form", "Rol", new { IdRole = rol.Id, Name= rol.Name})"><i class=""></i></a></td>
+                            <td class="text-center">@rol.Id </td>                                                                                     
+
+
+                            <td class="text-center"><a class="btn btn-danger bi bi-trash" href="@Url.Action("Delete", "Rol",  new { IdRole = rol.Id })" onclick="return confirm('Estas seguro que deseas eliminar este registro?');"><i class=""></i></a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-danger" role="alert">
+            No se han podido recuperar datos
+        </div>
+    }
+
+</div>

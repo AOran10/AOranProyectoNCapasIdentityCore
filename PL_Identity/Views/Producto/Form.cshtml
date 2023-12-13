@@ -1,0 +1,116 @@
+﻿@model ML.Producto
+@{
+    ViewData["Title"] = "Form";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript"  src="~/js/ProductoForm.js"></script>
+<script src="~/lib/jquery/dist/jquery.js" type=”text/javascript”></script>
+<script src="~/lib/jquery/dist/jquery.min.js" type=”text/javascript”></script>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>@ViewBag.Subtitle</h2>
+            <hr />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 ">
+            <h5>Llena todos los datos para @ViewBag.Accion el producto</h5>
+            <br />
+        </div>
+    </div>
+    <div class="row">
+        <form action="/Producto/Form" method="post" enctype="multipart/form-data">
+            <div class="row">
+                <div class="form-group col-md-3 visually-hidden">
+                    <label>Id:</label>
+                    <input type="text" class="form-control" name="Id" value="@Model.Id" placeholder="Id" />
+                </div>
+                <div class="form-group col-md-3">
+                    <label>Nombre:</label>
+                    <input type="text" class="form-control" name="Nombre" value="@Model.Nombre" placeholder="Nombre" />
+                </div>
+                <div class="form-group col-md-3">
+                    <label>Descripción:</label>
+                    <input type="text" class="form-control" name="Descripcion" value="@Model.Descripcion" placeholder="Descripción del producto"></input>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-3">
+                    <label>Stock inicial:</label>
+                    <input type="number" class="form-control" name="Stock" value="@Model.Stock" />
+                </div>
+                <div class="form-group col-md-3">
+                    <label>Piezas en curso</label>
+                    <input type="number" class="form-control" name="EnCurso" value="@Model.EnCurso" />
+                </div>
+                <div class="form-group col-md-3">
+                    <label>Precio</label>
+                    <input type="number" class="form-control" name="Precio" value="@Model.Precio" />
+                </div>
+            </div>
+          
+            <div class="row">
+                <div class="col-md-3">
+                    <label>Area:</label>
+                    @Html.DropDownListFor(model => model.Departamento.Area.IdArea, new SelectList(Model.Departamento.Area.Areas, "IdArea", "Nombre"), "--Seleccione Area--",htmlAttributes: new { @onchange=("changeDepartamento()")   , @id = "ddlArea", @class = "form-control" })
+                </div>
+                <div class="col-md-3">
+                    <label>Departamento:</label>
+                    @if (Model.Departamento.Departamentos == null)
+                    {
+                        @Html.DropDownListFor(model => model.Departamento.IdDepartamento, new SelectList(string.Empty, "Value", "Text"), "--Selecciona un Departamento--", htmlAttributes: new { @id = "ddlDepartamento", @class = "form-control" })
+                    }
+                    else
+                    {
+                        @Html.DropDownListFor(model => model.Departamento.IdDepartamento, new SelectList(Model.Departamento.Departamentos, "IdDepartamento", "Nombre"), "--Selecciona un departamento--", htmlAttributes: new { @id = "ddlDepartamento", @class = "form-control" })
+                    }
+                   
+                </div>
+            </div>
+            <div class="col-md-12">
+                <label for="fuImagen">Imagen</label>
+                <input type="file" id="fuImagen" name="fuImagen" onchange="previewImage(event)" />
+                @if (Model.Imagen == null)
+                {
+                    <img src="https://th.bing.com/th/id/OIP.yg9K7_Uf9-FcRAgWVG93MAHaD0?rs=1&pid=ImgDetMain" id="imgProducto" style="width: 150px; height: 150px;" />
+                }
+                else
+                {
+                    <img src="data:image/png;base64,@Convert.ToBase64String(Model.Imagen)" id="imgProducto" style="  width:100px; height:100px; " />
+                }
+                @* <input type="hidden" id="hiddenImagen" name="Imagen" /> *@
+                @Html.HiddenFor(model => model.Imagen)
+            </div>
+            <div class="col-md-3">
+                <br />
+                <hr />
+                <input type="submit" class="btn btn-success" value="@ViewBag.Accion"></input>
+                <button type="button" onclick="window.location.href='/Producto/GetAll'" class="btn btn-danger">Volver</button>
+
+            </div>
+        </form>
+        
+    </div>
+</div>
+
+<script>
+    function previewImage(event) {
+        var input = event.target;
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                var image = document.getElementById('imgProducto');
+                image.src = e.target.result;
+                document.getElementById('hiddenImagen').value = e.target.result;
+            }
+            reader.readAsDataURL(input.files[0]);
+        } else {
+            var image = document.getElementById('imgUsuario');
+            image.src = 'https://th.bing.com/th/id/OIP.yg9K7_Uf9-FcRAgWVG93MAHaD0?rs=1&pid=ImgDetMain';
+            document.getElementById('hiddenImagen').value = '';
+        }
+    }
+</script>

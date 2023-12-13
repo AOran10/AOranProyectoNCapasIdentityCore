@@ -1,0 +1,61 @@
+﻿@model ML.Departamento
+@{
+    ViewData["Title"] = "Form";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>@ViewBag.Subtitle</h2>
+            <hr />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 ">
+            <h5>Llena todos los datos para @ViewBag.Accion el departamento</h5>
+            <br />
+        </div>
+    </div>
+    <div class="row">
+        <form action="/Departamento/Form" method="post" enctype="multipart/form-data">
+            <div class="row">
+                <div class="form-group col-md-3 visually-hidden">
+                    <label>Id:</label>
+                    <input type="text" class="form-control" name="IdDepartamento" value="@Model.IdDepartamento" placeholder="Id" />
+                </div>
+                <div class="form-group col-md-3 visually-hidden">
+                    <label>Id:</label>
+                    <input type="text" class="form-control" name="IdArea" value="@Model.Area.IdArea" placeholder="Id" />
+                </div>
+                <div class="form-group col-md-3">
+                    <a>
+                        <label>Area:</label>
+                        <input type="text" class="form-control" name="NombreArea" value="@Model.Area.Nombre" placeholder="Area" disabled />
+                    </a>
+                </div>
+                <div class="form-group col-md-3">
+                    <label>Nombre:</label>
+                    <input type="text" class="form-control" name="Nombre" value="@Model.Nombre" placeholder="Nombre" />
+                </div>
+                <div class="form-group col-md-3">
+                    <label>Descripción:</label>
+                    <input type="text" class="form-control" name="Descripcion" value="@Model.Descripcion" placeholder="Descripción del departamento">
+                </div>
+            </div>
+
+
+
+            <div class="col-md-3">
+                <br />
+                <hr />
+                <input type="submit" class="btn btn-success" value="@ViewBag.Accion"></input>
+                <button type="button" onclick="window.location.href='/Area/GetAll'" class="btn btn-danger">Volver</button>
+
+            </div>
+        </form>
+
+    </div>
+</div>
+

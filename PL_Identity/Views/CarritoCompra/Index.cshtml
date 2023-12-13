@@ -1,0 +1,22 @@
+﻿@model ML.Carrito
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Realiza tu compra!!!</h1>
+<div class="container">
+    @if (Model == null)
+    {
+        <div class="alert alert-warning" role="alert">
+            No haz generado ningun carrito de compra
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-success" role="alert">
+            Aqui podras visualizar los productos
+        </div>
+    }
+</div>
+    

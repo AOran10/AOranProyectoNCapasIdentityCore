@@ -1,0 +1,80 @@
+﻿@model ML.Departamento
+@{
+    ViewData["Title"] = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Departamentos</h3>
+            <hr />
+        </div>
+    </div>
+    <div class=" row">
+        @using (Html.BeginForm("GetAll", "Departamento", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <div class="row ">
+
+                <div class="col-md-5 form-check-inline">
+                    <label>Area</label>
+                    @Html.DropDownListFor(model => model.Area.IdArea, new SelectList(Model.Area.Areas, "IdArea", "Nombre"), "--Seleccione un area--", new { @class = "form-control" })
+                </div>
+                <div class="col-md-1">
+                    <input type="submit" class="btn btn-info bi bi-search" value="Buscar" />
+                </div>
+            </div>
+        }
+    
+    <div class="row">
+        @if (Model.Departamentos != null)
+            {
+                <div class="row">
+                    <div class="col-md-1 offset-11">
+                        @Html.ActionLink(" +", "Form", "Departamento", new { IdArea = Model.Area.IdArea}, new { @class = "btn btn-success bi-person-fill-add" })
+                    </div>
+                    <br />
+                    <hr />
+                </div>
+                @if (Model.Departamentos.Count > 0)
+                {
+
+                    <table class="table table-hover">
+                        <thead class="thead-dark">
+                        <th scope="col">Editar</th>
+                        <th scope="col">IdDepartamento</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Descripcion</th>
+                        <th scope="col">IdArea</th>
+                        <th scope="col">NombreArea</th>
+                        <th scope="col">Eliminar</th>
+                        </thead>
+                        <tbody>
+                            @foreach (ML.Departamento departamento in Model.Departamentos)
+                            {
+                                <tr>
+                                    <td scope="row" class="text-center">
+                                        <a class="btn btn-primary bi bi-pencil-fill" href="@Url.Action("Form","Departamento", new {IdDepartamento = departamento.IdDepartamento, IdArea = Model.Area.IdArea})"></a>
+                                    </td>
+                                    <td>@departamento.IdDepartamento</td>
+                                    <td>@departamento.Nombre</td>
+                                    <td>@departamento.Descripcion</td>
+                                    <td>@departamento.Area.IdArea</td>
+                                    <td>@departamento.Area.Nombre</td>
+                                    <td>
+                                        <a class="btn btn-danger bi bi-trash" onclick="return confirm('¿Estás seguro de eliminar este departamento?');" href="@Url.Action("Delete","Departamento", new {IdDepartamento = departamento.IdDepartamento})"></a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <div class="alert alert-danger" role="alert">
+                        No se han podido recuperar datos
+                    </div>
+                }
+            }
+    </div>
+</div>
+
