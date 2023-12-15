@@ -48,3 +48,6 @@ function ProductoGet(Id) {
 function OpenCar(UserName) {
     window.location.href = `/CarritoCompra/Index?UserName=${UserName}`;
 }
+function OpenBag(UserName) {
+    window.location.href = `/PedidoUser/Index?UserName=${UserName}`;
+}

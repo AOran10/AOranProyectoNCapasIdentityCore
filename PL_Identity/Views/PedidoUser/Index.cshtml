@@ -1,0 +1,54 @@
+﻿@model ML.Pedido
+@{
+	ViewData["Title"] = "Index";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-12">
+			<h3>Tus pedidos :D</h3>
+			<hr />
+		</div>
+	</div>
+	<div class="row">
+
+		<br />
+		<hr />
+	</div>
+	<div class="row">
+
+		@if (Model.Pedidos.Count > 0)
+		{
+
+			@foreach (ML.Pedido pedido in Model.Pedidos)
+			{
+				<div class="card w-100">
+					<div class="card-header">
+						<p>Estatus del pedido: @pedido.Estatus.NombreEstatus</p>
+					</div>
+					<div class="card-body">
+						<div class="row">
+							<div class="col-md-3">
+								<img src="https://www.kindpng.com/picc/m/121-1218777_ecommerce-shopping-cart-png-photo-ecommerce-e-shopping.png" id="imgProducto" style="  width:100px; height:100px; " />
+							</div>
+							<div class="col-md-5">
+								<h5 class="card-title">@pedido.Estatus.Descripcion</h5>
+								<p class="card-text">Fecha del Pedido: @pedido.Fecha</p>
+								<p class="card-text">Total del Pedido: $@pedido.Total.00</p>
+							</div>
+							<div class="col-md-3">
+								<a href="#" class="btn btn-primary">Ver Detalles Pedido...</a>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			}
+		}
+		else
+		{
+			<div class="alert alert-danger" role="alert">
+				No se han podido recuperar datos
+			</div>
+		}

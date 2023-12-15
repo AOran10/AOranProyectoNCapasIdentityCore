@@ -1,0 +1,59 @@
+﻿@model ML.Pedido
+@{
+    ViewData["Title"] = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script type="text/javascript" src="~/js/PedidoAdminGetAll.js"></script>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Pedidos</h3>
+            <hr />
+        </div>
+    </div>
+    <div class="row">
+        
+        <br />
+        <hr />
+    </div>
+    <div class="row">
+
+        @if (Model.Pedidos.Count > 0)
+        {
+            <table class="table table-hover">
+                <thead class="thead-dark">
+                <th scope="col">IdUsuario</th>
+                <th scope="col">Fecha</th>
+                <th scope="col">IdPedido</th>
+                <th scope="col">Estatus</th>
+                </thead>
+                <tbody>
+                    @foreach (ML.Pedido pedido in Model.Pedidos)
+                    {
+                        <tr>
+                            @* <td scope="row" class="text-center">
+                                <a class="btn btn-primary bi bi-pencil-fill" href="@Url.Action("Form","Producto", new {IdPedido = pedido.IdPedido})"></a>
+                            </td> *@
+                            <td>@pedido.Usuario.IdUsuario</td>
+                            <td>@pedido.Fecha</td>
+                            <td>@pedido.IdPedido</td>
+                            @* <td>@pedido.Estatus.IdEstatus</td> *@
+                            <td>
+                                @* @Html.DropDownListFor(pedido => pedido.Estatus.IdEstatus, new SelectList(Model.Estatus.EstatusList, "IdEstatus", "NombreEstatus"), "--Seleccione Estatus--",htmlAttributes: new { @onchange=("changeEstatus()")   , @id = "ddlEstatus", @class = "form-control" }) *@
+                                @Html.DropDownListFor(model => pedido.Estatus.IdEstatus, new SelectList(Model.Estatus.EstatusList, "IdEstatus", "NombreEstatus"), "--Seleccione Estatus--",htmlAttributes: new { @onchange=("changeEstatus(this.id)")   , @id = pedido.IdPedido, @class = "form-control" })
+                                @* @Html.DropDownListFor(pedido => pedido.Estatus.IdEstatus, new SelectList(string.Empty, "Value", "Text"), "--Seleccione Estatus--",htmlAttributes: new { @onchange=("changeEstatus()")   , @id = "ddlEstatus", @class = "form-control" }) *@
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <div class="alert alert-danger" role="alert">
+                No se han podido recuperar datos
+            </div>
+        }
+    </div>
+</div>

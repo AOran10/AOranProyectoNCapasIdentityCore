@@ -13,6 +13,8 @@ public partial class Pedido
 
     public int? IdEstatus { get; set; }
 
+    public decimal? Total { get; set; }
+
     public virtual ICollection<DetallePedido> DetallePedidos { get; set; } = new List<DetallePedido>();
 
     public virtual Estatus? IdEstatusNavigation { get; set; }

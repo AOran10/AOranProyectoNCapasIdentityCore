@@ -97,14 +97,10 @@ namespace BL
                                      IdUser = user.Id,
                                      UserName = user.UserName
                                  }).FirstOrDefault();
-
-
-
                     if (query != null)
                     {
                         var item = query;
                         IdUser = item.IdUser;
-
                     }
                     else
                     {

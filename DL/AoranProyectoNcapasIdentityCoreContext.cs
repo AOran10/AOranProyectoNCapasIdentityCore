@@ -226,6 +226,7 @@ public partial class AoranProyectoNcapasIdentityCoreContext : DbContext
 
             entity.Property(e => e.Fecha).HasColumnType("date");
             entity.Property(e => e.IdUsuario).HasMaxLength(450);
+            entity.Property(e => e.Total).HasColumnType("decimal(18, 0)");
 
             entity.HasOne(d => d.IdEstatusNavigation).WithMany(p => p.Pedidos)
                 .HasForeignKey(d => d.IdEstatus)

@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/PL_Identity.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/Producto.css" />
+    <script type="text/javascript" src="~/js/Index.js"></script>
 </head>
 <body>
     <header>
@@ -43,6 +44,9 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Departamento" asp-action="GetAll">Departamentos</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="PedidoAdmin" asp-action="GetAll">Pedidos</a>
                             </li>
                         }
                         else if (User.IsInRole("Usuario"))

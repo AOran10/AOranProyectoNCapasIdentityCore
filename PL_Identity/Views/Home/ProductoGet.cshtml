@@ -4,6 +4,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <link rel="stylesheet" href="~/css/Producto.css" />
+<script type="text/javascript" src="~/js/ProductoGet.js"></script>
 <div class="container">
     <div class="row">
         <div class="col-md-4">
@@ -26,15 +27,24 @@
         </div>
         <div class="col-md-4">
             <card class="compraProducto">
-                <h2>Precio: @Model.Precio</h2>
+                <h2>Precio: <a id="PrecioProducto">@Model.Precio</a></h2>
                 <p class="existencias">Existencias: @Model.Stock</p>
+                
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <button class="btn btn-secondary" type="button" onclick="restarValor()">-</button>
+                    </div>
+                    <input type="number" class="col-md-3 text-center" id="cantidad" value="1">
+                    <div class="input-group-append">
+                        <button class="btn btn-secondary" type="button" onclick="sumarValor()">+</button>
+                    </div>
+                </div>
+                <p></p>
                 <div class="row">
                     <button class="btn btn-info col-md-4 form-control" onclick="agregarAlCarrito('@Model.Id')">Agregar al carrito</button>
                     <p></p>
                     <button class="btn btn-info col-md-4 form-control" onclick="comprarAhora('@Model.Id')">Comprar ahora</button>
-
                 </div>
-
             </card>
         </div>
     </div>
