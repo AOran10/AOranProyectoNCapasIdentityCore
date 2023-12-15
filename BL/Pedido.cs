@@ -65,16 +65,25 @@ namespace BL
                                         ML.Result resultDeleteCar = BL.Carrito.DeleteCar(IdCarrito);
                                         if (resultDeleteCar.Correct)
                                         {
-                                            ML.Result resultProcesoUpdate = BL.Pedido.SetEnProcesoPedido(itemPedido.IdPedido);
-                                            if (resultProcesoUpdate.Correct)
+                                            ML.Result resultTotal = BL.Pedido.SetTotal(itemPedido.IdPedido);
+                                            if (resultTotal.Correct)
                                             {
-                                                result.Correct = resultProcesoUpdate.Correct;
-                                                result.ErrorMessage = resultProcesoUpdate.ErrorMessage;
-                                            }
+												ML.Result resultProcesoUpdate = BL.Pedido.SetEnProcesoPedido(itemPedido.IdPedido);
+												if (resultProcesoUpdate.Correct)
+												{
+													result.Correct = resultProcesoUpdate.Correct;
+													result.ErrorMessage = resultProcesoUpdate.ErrorMessage;
+												}
+												else
+												{
+													result.Correct = resultProcesoUpdate.Correct;
+													result.ErrorMessage = resultProcesoUpdate.ErrorMessage;
+												}
+											}
                                             else
                                             {
-                                                result.Correct = resultProcesoUpdate.Correct;
-                                                result.ErrorMessage = resultProcesoUpdate.ErrorMessage;
+                                                result.Correct = resultTotal.Correct;
+                                                result.ErrorMessage = resultTotal.ErrorMessage;
                                             }
                                         }
                                         else
@@ -306,7 +315,34 @@ namespace BL
 					{
                         var subtotales = queryTotal;
                         var total = subtotales.Sum(x => Convert.ToDecimal(x));
-                        result.Object = total;
+
+						var queryPedido = (from pedidoLINQ in context.Pedidos
+										   where pedidoLINQ.IdPedido == IdPedido
+										   select pedidoLINQ).FirstOrDefault();
+                        if (queryPedido != null)
+                        {
+							queryPedido.Total = total;
+                            context.Pedidos.Update(queryPedido);
+							int rowsAffected = context.SaveChanges();
+
+							if (rowsAffected > 0)
+							{
+								result.Correct = true;
+								result.ErrorMessage = "Total Asignado";
+							}
+							else
+							{
+								result.Correct = false;
+								result.ErrorMessage = "No se pudo asignar el total";
+							}
+
+
+						}
+						else
+						{
+							result.Correct = false;
+							result.ErrorMessage = "No se pudorecolectar el carrito";
+						}
 					}
                     else
                     {
