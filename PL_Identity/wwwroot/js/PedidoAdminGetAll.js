@@ -1,18 +1,6 @@
 ﻿function changeEstatus(IdPedido) {
     var Estatuses = document.getElementById(IdPedido)
     var IdEstatus = Estatuses.value;
-    //$.ajax({
-    //    type: 'POST',
-    //    dataType: 'json',
-    //    url: '/PedidoAdmin/UpdateStatus',
-    //    data: { IdPedido, IdEstatus },
-    //    success: {
-
-    //    },
-    //    error: function (ex) {
-    //        alert('Failed.' + ex);
-    //    }
-    //})
     var settings = {
         "url": '/PedidoAdmin/UpdateStatus',
         "method": "POST",

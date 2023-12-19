@@ -43,6 +43,8 @@ public partial class AoranProyectoNcapasIdentityCoreContext : DbContext
 
     public virtual DbSet<Producto> Productos { get; set; }
 
+    public virtual DbSet<ProductoView> ProductoViews { get; set; }
+
     public virtual DbSet<RolesAsignado> RolesAsignados { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -244,6 +246,24 @@ public partial class AoranProyectoNcapasIdentityCoreContext : DbContext
             entity.ToTable("Producto");
 
             entity.Property(e => e.Nombre)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.Precio).HasColumnType("decimal(18, 0)");
+        });
+
+        modelBuilder.Entity<ProductoView>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("ProductoView");
+
+            entity.Property(e => e.NombreArea)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.NombreDepartamento)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.NombreProducto)
                 .HasMaxLength(100)
                 .IsUnicode(false);
             entity.Property(e => e.Precio).HasColumnType("decimal(18, 0)");

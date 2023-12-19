@@ -12,8 +12,16 @@ namespace PL_Identity.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            ML.Result result = BL.Producto.GetAll();
             ML.Producto producto = new ML.Producto();
+
+            producto.Nombre = "";
+            producto.Departamento = new ML.Departamento();
+            producto.Departamento.IdDepartamento = 0;
+            producto.Departamento.Area = new ML.Area();
+            producto.Departamento.Area.IdArea = 0;
+
+            ML.Result result = BL.Producto.GetAll(producto);
+
             producto.Productos = result.Objects.ToList();
 
             return View(producto);

@@ -15,9 +15,13 @@ namespace PL_Identity.Controllers
 
 		public IActionResult Index()
 		{
-			ML.Result result = BL.Producto.GetAll();
 			ML.Producto producto = new ML.Producto();
-			producto.Productos = result.Objects;
+			producto.Departamento = new ML.Departamento();
+			producto.Departamento.Area = new ML.Area();
+
+			ML.Result resultAreas = BL.Area.GetAll();
+			producto.Departamento.Area.Areas = resultAreas.Objects;
+
 			return View(producto);
 		}
 
@@ -31,9 +35,19 @@ namespace PL_Identity.Controllers
 		{
 			return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
 		}
-        public JsonResult GetProductosIndex()
-        {
-			var result = BL.Producto.GetAll();
+        public JsonResult GetProductosIndex(int? IdArea, int? IdDepartamento, string? Nombre)
+         {
+			ML.Producto producto = new ML.Producto();
+	
+			producto.Nombre = Nombre != null ? Nombre : "";
+            producto.Departamento = new ML.Departamento();
+			producto.Departamento.IdDepartamento = IdDepartamento != null ? IdDepartamento.Value : 0;
+
+            producto.Departamento.Area = new ML.Area();
+			producto.Departamento.Area.IdArea = IdArea != null ? IdArea.Value : 0;
+
+
+            var result = BL.Producto.GetAll(producto);
             return Json(result.Objects);
         }
         public ActionResult ProductoGet(int Id)
@@ -43,6 +57,11 @@ namespace PL_Identity.Controllers
             ML.Producto producto = (ML.Producto)result.Object;
 
             return View(producto);
+        }
+        public JsonResult GetDepartamento(int IdArea)
+        {
+            var result = BL.Departamento.GetByArea(IdArea);
+            return Json(result.Objects);
         }
     }
 }

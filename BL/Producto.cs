@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,53 +15,42 @@ namespace BL
     
     public class Producto
     {
-        public static ML.Result GetAll()
+        public static ML.Result GetAll(ML.Producto producto)
         {
             ML.Result result = new ML.Result();
             try
             {
                 using (DL.AoranProyectoNcapasIdentityCoreContext context = new DL.AoranProyectoNcapasIdentityCoreContext())
                 {
-                    var query = (from producto in context.Productos
-                                 join departamento in context.Departamentos on producto.IdDepartamento equals departamento.IdDepartamento
-                                 join area in context.Areas on departamento.IdArea equals area.IdArea
-                                 select new
-                                 {
-                                     IdProducto = producto.IdProducto,
-                                     Nombre = producto.Nombre,
-                                     Descripcion = producto.Descripcion,
-                                     Stock = producto.Stock,
-                                     EnCurso = producto.EnCurso,
-                                     Imagen = producto.Imagen,
-                                     Precio = producto.Precio,
-                                     IdDepartamento = producto.IdDepartamento,
-                                     NombreDepartamento = departamento.Nombre,
-                                     IdArea = departamento.IdArea,
-                                     NombreArea = area.Nombre
-                                 }
-                                 ).ToList();
-                    if (query != null)
+                    var query = context.ProductoViews
+						.FromSqlRaw("EXECUTE ProductoGetAll @IdDepartamento, @IdArea, @Nombre",
+				new SqlParameter("@IdDepartamento", producto.Departamento.IdDepartamento),
+				new SqlParameter("@IdArea", producto.Departamento.Area.IdArea),
+				new SqlParameter("@Nombre", producto.Nombre))
+			        .ToList();
+
+					if (query != null)
                     {
                         result.Objects = new List<object>();
                         foreach (var item in query)
                         {
-                            ML.Producto producto = new ML.Producto();
+                            ML.Producto productoConsulta = new ML.Producto();
 
-                            producto.Id = item.IdProducto;
-                            producto.Nombre = item.Nombre;
-                            producto.Descripcion = item.Descripcion;
-                            producto.Stock = (int)item.Stock;
-                            producto.EnCurso = (int)item.EnCurso;
-                            producto.Imagen = item.Imagen;
-                            producto.Precio = item.Precio;
-                            producto.Departamento = new ML.Departamento();
-                            producto.Departamento.IdDepartamento = (int)item.IdDepartamento;
-                            producto.Departamento.Nombre = item.NombreDepartamento;
-                            producto.Departamento.Area = new ML.Area();
-                            producto.Departamento.Area.IdArea = (int)item.IdArea;
-                            producto.Departamento.Area.Nombre = item.NombreArea;
+                            productoConsulta.Id = item.IdProducto;
+                            productoConsulta.Nombre = item.NombreProducto;
+                            productoConsulta.Descripcion = item.Descripcion;
+                            productoConsulta.Stock = (int)item.Stock;
+                            productoConsulta.EnCurso = (int)item.EnCurso;
+                            productoConsulta.Imagen = item.Imagen;
+                            productoConsulta.Precio = item.Precio;
+                            productoConsulta.Departamento = new ML.Departamento();
+                            productoConsulta.Departamento.IdDepartamento = (int)item.IdDepartamento;
+                            productoConsulta.Departamento.Nombre = item.NombreDepartamento;
+                            productoConsulta.Departamento.Area = new ML.Area();
+                            productoConsulta.Departamento.Area.IdArea = (int)item.IdArea;
+                            productoConsulta.Departamento.Area.Nombre = item.NombreArea;
 
-                            result.Objects.Add(producto);
+                            result.Objects.Add(productoConsulta);
                         }
                         result.Correct = true;
                     }
