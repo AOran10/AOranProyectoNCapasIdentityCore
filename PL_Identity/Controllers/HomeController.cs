@@ -46,7 +46,6 @@ namespace PL_Identity.Controllers
             producto.Departamento.Area = new ML.Area();
 			producto.Departamento.Area.IdArea = IdArea != null ? IdArea.Value : 0;
 
-
             var result = BL.Producto.GetAll(producto);
             return Json(result.Objects);
         }

@@ -313,8 +313,16 @@ namespace BL
 
 					if (queryTotal != null)
 					{
-                        var subtotales = queryTotal;
-                        var total = subtotales.Sum(x => Convert.ToDecimal(x));
+                        decimal total = 0;
+                        foreach (var item in queryTotal)
+                        {
+                            string precioNormal = item.Subtotal.ToString();
+                            total = total+ decimal.Parse(precioNormal);
+                        }
+                        //decimal [] subtotales = decimal.Parse(queryTotal).ToArray();
+
+
+                        //var total = subtotales.Sum();
 
 						var queryPedido = (from pedidoLINQ in context.Pedidos
 										   where pedidoLINQ.IdPedido == IdPedido
