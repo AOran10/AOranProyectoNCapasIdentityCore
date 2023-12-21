@@ -4,17 +4,28 @@
 
 function renderProductos() {
     $("#productos").empty(); 
-    var IdArea = document.getElementById("ddlArea").value;
-    var IdDepartamento = document.getElementById("ddlDepartamento").value;
-    var Nombre = document.getElementById("Busqueda").value;
+    var area = document.getElementById("ddlArea").value;
+    var depa = document.getElementById("ddlDepartamento").value;
+    var consultaAbierta = document.getElementById("Busqueda").value;
 
+    var IdArea = area != "" ? parseInt(area): 0;
+    var IdDepartamento = depa != "" ? parseInt(depa) : 0;
+
+    var consulta = {
+        "consultaAbierta": consultaAbierta,
+        "idArea": IdArea,
+        "idDepartamento": IdDepartamento
+    }
+    
     var settings = {
-        "url": '/Home/GetProductosIndex',
-        "method": "POST",
-        data: { IdArea, IdDepartamento, Nombre },
+        type: 'POST',
+        url: 'http://localhost:5286/api/Producto/getall',
+        dataType: 'json',
+        data: JSON.stringify(consulta),
+        contentType: "application/json; charset=uft-8",
     };
     $.ajax(settings).done(function (result) {
-        $.each(result, function (i, producto) {
+        $.each(result.objects, function (i, producto) {
             var id = producto.id;
             var nombre = producto.nombre;
             var imagen = producto.imagen;
@@ -63,7 +74,8 @@ function changeDepartamento() {
         url: '/Home/GetDepartamento',
         dataType: 'json',
         data: { IdArea: $("#ddlArea").val() },
-        success: function (departamentos) {
+        success: function (result) {
+            departamentos = result.objects;
             $("#ddlDepartamento").append('<option value="0">' + '--Seleccione un departamento--' + '</option>');
             $.each(departamentos, function (i, departamentos) {
                 $("#ddlDepartamento").append('<option value="'

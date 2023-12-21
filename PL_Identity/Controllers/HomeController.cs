@@ -1,6 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Azure;
+using Azure.Core;
+using Microsoft.AspNetCore.Mvc;
+using ML;
+using Newtonsoft.Json;
 using PL_Identity.Models;
+using RestSharp;
 using System.Diagnostics;
+using System.Text.Json;
 
 namespace PL_Identity.Controllers
 {
@@ -49,18 +55,58 @@ namespace PL_Identity.Controllers
             var result = BL.Producto.GetAll(producto);
             return Json(result.Objects);
         }
-        public ActionResult ProductoGet(int Id)
+        public async Task<ActionResult> ProductoGet(int Id)
         {
-            ML.Result result = BL.Producto.GetById(Id);
+            ML.Producto producto = new ML.Producto();
+            try
+			{
+                var options = new RestClientOptions("http://localhost:5286/api/Producto/getbyid/" + Id);
+                var client = new RestClient(options);
+                var request = new RestRequest("");
+                var response = await client.GetAsync(request);
+				
+				if (response.IsSuccessStatusCode)
+				{
+                    ML.Result preresult = System.Text.Json.JsonSerializer.Deserialize<ML.Result>(response.Content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    string objparticular = preresult.Object.ToString();
+                    ML.Producto resultobject = System.Text.Json.JsonSerializer.Deserialize<ML.Producto>(objparticular, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-            ML.Producto producto = (ML.Producto)result.Object;
+                    producto = resultobject;
+                }
+
+            }
+			catch (Exception ex)
+			{
+				
+			}
 
             return View(producto);
         }
-        public JsonResult GetDepartamento(int IdArea)
+        public async Task<JsonResult>  GetDepartamento(int idArea)
         {
-            var result = BL.Departamento.GetByArea(IdArea);
-            return Json(result.Objects);
+            dynamic json = "";
+            try
+            {
+                var options = new RestClientOptions("http://localhost:5286/api/Departamento/getbyarea/" + idArea);
+                var client = new RestClient(options);
+                var request = new RestRequest("");
+                var response = await client.GetAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    ML.Result preresult = System.Text.Json.JsonSerializer.Deserialize<ML.Result>(response.Content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    
+                    json = preresult;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return Json(json);
+
         }
     }
 }

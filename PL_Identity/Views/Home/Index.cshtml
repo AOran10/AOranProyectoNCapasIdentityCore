@@ -15,7 +15,7 @@
         </div>
         <div class="col-md-3">
             <label>Area:</label>
-            @Html.DropDownListFor(model => model.Departamento.Area.IdArea, new SelectList(Model.Departamento.Area.Areas, "IdArea", "Nombre"), "--Seleccione Area--",htmlAttributes: new { @onchange=("changeDepartamento()")   , @id = "ddlArea", @class = "form-control" })
+            @Html.DropDownListFor(model => model.Departamento.Area.IdArea, new SelectList(Model.Departamento.Area.Areas, "IdArea", "Nombre"), "--Seleccione Area--",htmlAttributes: new { @onchange=("changeDepartamento()"),   @id = "ddlArea", @class = "form-control" })
         </div>
         <div class="col-md-3">
             <label>Departamento:</label>
@@ -23,7 +23,7 @@
         </div>
         <div class="col-md-3">
             <label>Busqueda Abierta:</label>
-            <input type="text" placeholder="Busqueda Abierta" id="Busqueda" class="form-control" />
+            <input type="text" placeholder="Busqueda Abierta" id="Busqueda" class="form-control " , name="ConsultaAbierta" />
         </div>
         <div class="col-md-3">
             <button class="btn btn-info " onclick="renderProductos();">Buscar</button>
