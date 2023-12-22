@@ -76,10 +76,10 @@ namespace SL.Controllers
         }
 
         // DELETE api/<Producto>/5
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int idProducto)
+        [HttpDelete("delete/{id}")]
+        public IActionResult Delete(int id)
         {
-            ML.Result result = BL.Producto.Delete(idProducto);  
+            ML.Result result = BL.Producto.Delete(id);  
             if (result.Correct)
             {
                 return Ok(result);

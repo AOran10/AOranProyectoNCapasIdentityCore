@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ML;
+using Newtonsoft.Json;
+using RestSharp;
+using System.Text.Json;
 
 namespace PL_Identity.Controllers
 {
@@ -8,9 +11,9 @@ namespace PL_Identity.Controllers
     [Authorize(Roles = "Usuario")]
     public class CarritoCompraController : Controller
     {
-        public IActionResult Index(string UserName)
+        public async Task<IActionResult> Index(string UserName)
         {
-            ML.Result result = BL.Carrito.GetCarrito(UserName);
+            ML.Result result = await CarritoGet(UserName);
             ML.Carrito carrito = result.Correct? (ML.Carrito)result.Object : new ML.Carrito();
             return View(carrito);
         }
@@ -46,5 +49,43 @@ namespace PL_Identity.Controllers
             ViewBag.Subtitle = "Realizar Pedido";
             return View("Modal");
         }
+        //---------------------------------------------
+        private async Task<ML.Result> CarritoGet(string UserName)
+        {
+            ML.Result result = new ML.Result();
+            try
+            {
+                var options = new RestClientOptions("http://localhost:5286/api/Carrito/get/" + UserName);
+                var client = new RestClient(options);
+                var request = new RestRequest("");
+                var response = await client.GetAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    ML.Result preresult = System.Text.Json.JsonSerializer.Deserialize<ML.Result>(response.Content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+
+                     string objparticular = preresult.Object.ToString();
+                    ML.Carrito resultobject = System.Text.Json.JsonSerializer.Deserialize<ML.Carrito>(objparticular, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    var copia = resultobject.Carritos.ToList();
+                    resultobject.Carritos = new List<object>();
+                    foreach (var item in copia)
+                    {
+                        ML.DetalleCarrito resultDetalle = System.Text.Json.JsonSerializer.Deserialize<ML.DetalleCarrito>(item.ToString(), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                        resultobject.Carritos.Add(resultDetalle);
+                    }
+                    result = preresult;
+                    result.Object = resultobject;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return result;
+        }
+
     }
 }
