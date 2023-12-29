@@ -23,6 +23,20 @@ namespace SL.Controllers
             }
         }
 
-       
+        // POST api/<Producto>
+        [HttpPost("add")]
+        public IActionResult Add(ML.Orden orden)
+        {
+            ML.Result result = BL.Carrito.AddToCar(orden);
+            if (result.Correct)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result.ErrorMessage);
+            }
+        }
+
     }
 }
